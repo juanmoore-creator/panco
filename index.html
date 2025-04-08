@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pedido de Lasañas PANCO</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: #fdf6ec;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    .formulario-container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 550px;
+      border: 4px solid #c0392b33;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header img {
+      width: 100px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .header h1 {
+      color: #c0392b;
+      font-size: 1.8rem;
+      margin: 0;
+    }
+
+    .lasaña-item {
+      margin-bottom: 20px;
+      padding: 15px;
+      background: #fff8f2;
+      border-radius: 12px;
+      border-left: 5px solid #27ae60;
+    }
+
+    .lasaña-item h3 {
+      margin: 0;
+      color: #b03a2e;
+      font-size: 1.2rem;
+    }
+
+    .lasaña-item p {
+      margin: 6px 0 12px;
+      color: #555;
+    }
+
+    .contador {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .contador button {
+      width: 32px;
+      height: 32px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      background-color: #e74c3c;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .contador button:hover {
+      background-color: #c0392b;
+    }
+
+    .contador input {
+      width: 40px;
+      text-align: center;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 5px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 20px;
+      color: #2c3e50;
+    }
+
+    input[type="text"],
+    textarea,
+    button.enviar {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button.enviar {
+      background-color: #27ae60;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 25px;
+      font-size: 1.1rem;
+      transition: background 0.3s;
+    }
+
+    button.enviar:hover {
+      background-color: #1e8449;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      text-align: center;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="formulario-container">
+    <div class="header">
+        <img src="https://raw.githubusercontent.com/juanmoore-creator/panco/main/logo.png" alt="Logo PANCO" /> <!-- Reemplazá con tu logo -->
+      <h1>Pedido de Lasañas PANCO</h1>
+    </div>
+
+    <form id="formulario">
+
+      <div class="lasaña-item">
+        <h3>La Clásica</h3>
+        <p>Bolognesa de carne con espinacas a la crema</p>
+        <div class="contador">
+          <button type="button" onclick="modificar('clasica', -1)">–</button>
+          <input type="number" id="clasica" value="0" min="0" readonly />
+          <button type="button" onclick="modificar('clasica', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="lasaña-item">
+        <h3>La Argenta</h3>
+        <p>Lomito de cerdo ahumado, queso dambo, cebolla caramelizada y morrón ahumado</p>
+        <div class="contador">
+          <button type="button" onclick="modificar('argenta', -1)">–</button>
+          <input type="number" id="argenta" value="0" min="0" readonly />
+          <button type="button" onclick="modificar('argenta', 1)">+</button>
+        </div>
+      </div>
+
+      <div class="lasaña-item">
+        <h3>La Veggie</h3>
+        <p>Bolognesa de soja texturizada y crema de espinacas</p>
+        <div class="contador">
+          <button type="button" onclick="modificar('veggie', -1)">–</button>
+          <input type="number" id="veggie" value="0" min="0" readonly />
+          <button type="button" onclick="modificar('veggie', 1)">+</button>
+        </div>
+      </div>
+
+      <label for="nombre">Tu nombre</label>
+      <input type="text" id="nombre" required placeholder="Ej: Juan Pérez" />
+
+      <label for="direccion">Dirección de entrega</label>
+      <textarea id="direccion" rows="3" required placeholder="Ej: Calle 123, Ciudad, Piso 2, Dpto B"></textarea>
+
+      <button class="enviar" type="submit">Enviar pedido por WhatsApp</button>
+    </form>
+
+    <div class="footer">
+      ¡Delivery barrial con sabor italiano! 🇮🇹
+    </div>
+  </div>
+
+  <script>
+    function modificar(id, valor) {
+      const input = document.getElementById(id);
+      let nuevo = parseInt(input.value) + valor;
+      if (nuevo < 0) nuevo = 0;
+      input.value = nuevo;
+    }
+
+    document.getElementById("formulario").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById("nombre").value.trim();
+      const clasica = parseInt(document.getElementById("clasica").value) || 0;
+      const argenta = parseInt(document.getElementById("argenta").value) || 0;
+      const veggie = parseInt(document.getElementById("veggie").value) || 0;
+      const direccion = document.getElementById("direccion").value.trim();
+
+      let mensaje = `Hola, soy ${nombre}. Quiero pedir:\n`;
+      if (clasica > 0) mensaje += `- ${clasica} porción(es) de La Clásica\n`;
+      if (argenta > 0) mensaje += `- ${argenta} porción(es) de La Argenta\n`;
+      if (veggie > 0) mensaje += `- ${veggie} porción(es) de La Veggie\n`;
+      mensaje += `Dirección de entrega: ${direccion}`;
+
+      const numero = "+34617885499";
+      const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+      
+      window.open(url, "_blank");
+    });
+  </script>
+</body>
+</html>
