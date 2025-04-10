@@ -191,6 +191,8 @@
       <label for="direccion">Dirección de entrega</label>
       <textarea id="direccion" rows="3" required placeholder="Ej: Calle 123, Ciudad, Piso 2, Dpto B"></textarea>
 
+      
+
       <label for="dia">¿Qué día querés que lo entreguemos?</label>
       <select id="dia" required>
         <option value="" disabled selected>Elegí un día</option>
@@ -202,6 +204,9 @@
         <option value="Sábado">Sábado</option>
         <option value="Domingo">Domingo</option>
       </select>
+      <div id="total-preview" class="precio-info" style="margin-top: 20px;">
+  Total: $0
+</div>
 
       <button class="enviar" type="submit">Enviar pedido por WhatsApp</button>
     </form>
@@ -211,36 +216,81 @@
     </div>
   </div>
 
-  <script>
-    function modificar(id, valor) {
-      const input = document.getElementById(id);
-      let nuevo = parseInt(input.value) + valor;
-      if (nuevo < 0) nuevo = 0;
-      input.value = nuevo;
+ <script>
+  const precioUnitario = 9000;
+  const costoEnvio = 1500;
+
+  function modificar(id, valor) {
+    const input = document.getElementById(id);
+    let nuevo = parseInt(input.value) + valor;
+    if (nuevo < 0) nuevo = 0;
+    input.value = nuevo;
+    actualizarTotal();
+  }
+
+  function actualizarTotal() {
+    const clasica = parseInt(document.getElementById("clasica").value) || 0;
+    const argenta = parseInt(document.getElementById("argenta").value) || 0;
+    const veggie = parseInt(document.getElementById("veggie").value) || 0;
+
+    const totalLasañas = clasica + argenta + veggie;
+    let total = totalLasañas * precioUnitario;
+
+    if (totalLasañas < 4 && totalLasañas > 0) {
+      total += costoEnvio;
     }
 
-    document.getElementById("formulario").addEventListener("submit", function(e) {
-      e.preventDefault();
+    document.getElementById("total-preview").innerText = `Total: $${total}`;
+  }
 
-      const nombre = document.getElementById("nombre").value.trim();
-      const clasica = parseInt(document.getElementById("clasica").value) || 0;
-      const argenta = parseInt(document.getElementById("argenta").value) || 0;
-      const veggie = parseInt(document.getElementById("veggie").value) || 0;
-      const direccion = document.getElementById("direccion").value.trim();
-      const dia = document.getElementById("dia").value;
+  document.getElementById("formulario").addEventListener("submit", function(e) {
+    e.preventDefault();
 
-      let mensaje = `Hola, soy ${nombre}. Quiero pedir:\n`;
-      if (clasica > 0) mensaje += `- ${clasica} porción(es) de La Clásica ($9000 c/u)\n`;
-      if (argenta > 0) mensaje += `- ${argenta} porción(es) de La Argenta ($9000 c/u)\n`;
-      if (veggie > 0) mensaje += `- ${veggie} porción(es) de La Veggie ($9000 c/u)\n`;
-      mensaje += `Dirección de entrega: ${direccion}\n`;
-      mensaje += `Día preferido de entrega: ${dia}`;
+    const nombre = document.getElementById("nombre").value.trim();
+    const clasica = parseInt(document.getElementById("clasica").value) || 0;
+    const argenta = parseInt(document.getElementById("argenta").value) || 0;
+    const veggie = parseInt(document.getElementById("veggie").value) || 0;
+    const direccion = document.getElementById("direccion").value.trim();
+    const dia = document.getElementById("dia").value;
 
-      const numero = "+34617885499";
-      const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
-      
-      window.open(url, "_blank");
-    });
-  </script>
+    let mensaje = `Hola, soy ${nombre}. Quiero pedir:\n`;
+    let totalLasañas = 0;
+
+    if (clasica > 0) {
+      mensaje += `- ${clasica} porción(es) de La Clásica ($9000 c/u)\n`;
+      totalLasañas += clasica;
+    }
+    if (argenta > 0) {
+      mensaje += `- ${argenta} porción(es) de La Argenta ($9000 c/u)\n`;
+      totalLasañas += argenta;
+    }
+    if (veggie > 0) {
+      mensaje += `- ${veggie} porción(es) de La Veggie ($9000 c/u)\n`;
+      totalLasañas += veggie;
+    }
+
+    if (totalLasañas === 0) {
+      alert("Por favor seleccioná al menos una lasaña.");
+      return;
+    }
+
+    mensaje += `Dirección de entrega: ${direccion}\n`;
+    mensaje += `Día preferido de entrega: ${dia}\n`;
+
+    if (totalLasañas < 4) {
+      mensaje += `Costo de envío: $1500\n`;
+    } else {
+      mensaje += `¡Con envío gratis por comprar 4 o más lasañas!\n`;
+    }
+
+    const numero = "+34617885499";
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+
+    window.open(url, "_blank");
+  });
+
+  // Mostrar el total al cargar por primera vez
+  actualizarTotal();
+</script>
 </body>
 </html>
