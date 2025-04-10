@@ -42,6 +42,13 @@
       margin: 0;
     }
 
+    .precio-info {
+      text-align: center;
+      color: #555;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
     .lasaña-item {
       margin-bottom: 20px;
       padding: 15px;
@@ -100,6 +107,7 @@
     }
 
     input[type="text"],
+    select,
     textarea,
     button.enviar {
       width: 100%;
@@ -135,8 +143,13 @@
 <body>
   <div class="formulario-container">
     <div class="header">
-        <img src="https://raw.githubusercontent.com/juanmoore-creator/panco/main/logo.png" alt="Logo PANCO" /> <!-- Reemplazá con tu logo -->
+      <img src="https://raw.githubusercontent.com/panco-lasagna/web/main/logo.png" alt="Logo PANCO" />
       <h1>Pedido de Lasañas PANCO</h1>
+    </div>
+
+    <div class="precio-info">
+      Cada lasaña cuesta <strong>$9000</strong><br>
+      ¡Listas para el horno y con delivery barrial!
     </div>
 
     <form id="formulario">
@@ -177,11 +190,23 @@
       <label for="direccion">Dirección de entrega</label>
       <textarea id="direccion" rows="3" required placeholder="Ej: Calle 123, Ciudad, Piso 2, Dpto B"></textarea>
 
+      <label for="dia">¿Qué día querés que lo entreguemos?</label>
+      <select id="dia" required>
+        <option value="" disabled selected>Elegí un día</option>
+        <option value="Lunes">Lunes</option>
+        <option value="Martes">Martes</option>
+        <option value="Miércoles">Miércoles</option>
+        <option value="Jueves">Jueves</option>
+        <option value="Viernes">Viernes</option>
+        <option value="Sábado">Sábado</option>
+        <option value="Domingo">Domingo</option>
+      </select>
+
       <button class="enviar" type="submit">Enviar pedido por WhatsApp</button>
     </form>
 
     <div class="footer">
-      ¡Delivery barrial con sabor italiano! 🇮🇹
+      ¡Gracias por elegir PANCO! 🇮🇹
     </div>
   </div>
 
@@ -201,12 +226,14 @@
       const argenta = parseInt(document.getElementById("argenta").value) || 0;
       const veggie = parseInt(document.getElementById("veggie").value) || 0;
       const direccion = document.getElementById("direccion").value.trim();
+      const dia = document.getElementById("dia").value;
 
       let mensaje = `Hola, soy ${nombre}. Quiero pedir:\n`;
-      if (clasica > 0) mensaje += `- ${clasica} porción(es) de La Clásica\n`;
-      if (argenta > 0) mensaje += `- ${argenta} porción(es) de La Argenta\n`;
-      if (veggie > 0) mensaje += `- ${veggie} porción(es) de La Veggie\n`;
-      mensaje += `Dirección de entrega: ${direccion}`;
+      if (clasica > 0) mensaje += `- ${clasica} porción(es) de La Clásica ($9000 c/u)\n`;
+      if (argenta > 0) mensaje += `- ${argenta} porción(es) de La Argenta ($9000 c/u)\n`;
+      if (veggie > 0) mensaje += `- ${veggie} porción(es) de La Veggie ($9000 c/u)\n`;
+      mensaje += `Dirección de entrega: ${direccion}\n`;
+      mensaje += `Día preferido de entrega: ${dia}`;
 
       const numero = "+34617885499";
       const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
