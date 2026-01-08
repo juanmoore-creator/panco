@@ -1,280 +1,324 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta name="theme-color" content="#144534">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#144534">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Les 3 - Menú Interactivo</title>
     <style>
-    :root {
-        --verde-les3: #144534;
-        --rosa-les3: #D6A0A0;
-        --oro: #D4AF37;
-        --crema-bg: #F8F5F0;
-        --blanco: #FFFFFF;
-        --text-main: #1A1A1A;
-    }
+        :root {
+            --verde-les3: #144534;
+            --rosa-les3: #D6A0A0;
+            --oro: #D4AF37;
+            --crema-bg: #F8F5F0;
+            --blanco: #FFFFFF;
+            --text-main: #1A1A1A;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
 
-    /* Corrección de fondo y rebote */
-    html {
-        background-color: var(--verde-les3); /* Color para el rebote superior */
-        overscroll-behavior-y: none;
-    }
+        /* Bloqueo de rebote y fondo base */
+        html {
+            background-color: var(--verde-les3);
+            overscroll-behavior-y: none;
+        }
 
-    body {
-        margin: 0;
-        padding: 0;
-        padding-bottom: 140px;
-        font-family: -apple-system, system-ui, sans-serif;
-        background-image: url('background.jpg');
-        background-size: cover;
-        background-attachment: fixed;
-        background-position: center;
-        min-height: 100vh;
-        position: relative;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 160px; /* Espacio para el footer flotante */
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            min-height: 100vh;
+            color: var(--text-main);
+        }
 
-    /* CAPA DE ACLARADO CRÍTICA */
-    /* Usamos un z-index alto para asegurar que tape la imagen oscura */
-    body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(248, 245, 240, 0.92); /* Casi blanco para que sea muy claro */
-        z-index: -1;
-        pointer-events: none;
-    }
+        /* Capa de aclarado (Watermark effect) */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(248, 245, 240, 0.92); /* 0.92 para máxima claridad */
+            z-index: -1;
+            pointer-events: none;
+        }
 
-    /* Header Compacto */
-    .app-header {
-        background: var(--verde-les3);
-        color: white;
-        padding: 10px 20px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
+        /* Header Compacto y Profesional */
+        .app-header {
+            background: var(--verde-les3);
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
 
-    .header-logo {
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        border: 2px solid var(--rosa-les3);
-        background: white;
-        object-fit: cover;
-    }
+        .header-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--rosa-les3);
+            background: white;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
 
-    .header-text-container h1 {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 800;
-        letter-spacing: 1px;
-    }
+        .header-text h1 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
 
-    .header-text-container p {
-        margin: 0;
-        font-size: 11px;
-        opacity: 0.85;
-        text-transform: uppercase;
-    }
+        .header-text p {
+            margin: 0;
+            font-size: 11px;
+            opacity: 0.85;
+            text-transform: uppercase;
+        }
 
-    /* Contenedores de productos */
-    .category-container {
-        margin: 15px;
-        background: var(--blanco);
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-        position: relative; /* Asegura que esté sobre el before */
-        z-index: 1;
-    }
+        /* Acordeones / Categorías */
+        .category-container {
+            margin: 15px;
+            background: var(--blanco);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(214, 160, 160, 0.2);
+        }
 
         .category-header {
             padding: 18px 20px;
-            background: var(--blanco);
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
+            user-select: none;
         }
 
         .category-header h2 {
-            margin: 0; font-size: 18px; color: var(--verde-les3);
-            display: flex; align-items: center; gap: 10px;
+            margin: 0;
+            font-size: 17px;
+            color: var(--verde-les3);
+            font-weight: 700;
         }
 
         .toggle-icon {
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 22px;
             color: var(--rosa-les3);
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
         }
 
         .category-content {
-            display: none; /* Retraído por defecto */
-            padding: 10px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: #fafafa;
         }
 
         .category-container.active .category-content {
-            display: block;
+            max-height: 1500px; /* Altura suficiente para el contenido */
+            border-top: 1px solid #eee;
         }
 
         .category-container.active .toggle-icon {
-            transform: rotate(45deg); /* El + se convierte en x */
+            transform: rotate(45deg);
         }
 
-        /* Productos */
+        /* Tarjetas de Producto */
         .product-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 10px;
-            border-bottom: 1px solid #f9f9f9;
+            padding: 14px 20px;
+            border-bottom: 1px solid #f0f0f0;
         }
 
-        .name-wrapper { display: flex; flex-direction: column; }
-        .product-name { font-weight: 600; font-size: 15px; }
-        .product-price { font-size: 13px; color: #777; }
+        .product-info { display: flex; flex-direction: column; flex: 1; }
+        .product-name { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
+        .product-price { font-size: 13px; color: #666; font-weight: 500; }
 
-        /* Badge Especial */
-        .special-badge {
+        /* Estrellas y Badges Premium */
+        .premium-tag {
             font-size: 10px;
-            background: #fff8e1;
             color: var(--oro);
-            border: 1px solid var(--oro);
-            padding: 2px 6px;
-            border-radius: 4px;
             font-weight: 800;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 3px;
-            width: fit-content;
+            gap: 4px;
             margin-top: 4px;
         }
 
-        /* Stepper Controles */
+        /* Controles de Cantidad (Stepper) */
         .stepper {
             display: flex;
             align-items: center;
-            background: #F0F2F5;
-            border-radius: 10px;
-            padding: 2px;
+            background: #eee;
+            border-radius: 12px;
+            padding: 3px;
+            margin-left: 10px;
         }
 
         .step-btn {
-            width: 32px; height: 32px;
-            border-radius: 8px; border: none;
-            background: var(--blanco);
+            width: 34px; height: 34px;
+            border: none;
+            background: white;
             color: var(--verde-les3);
-            font-weight: bold; font-size: 18px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .qty-val { padding: 0 12px; font-weight: 700; min-width: 15px; text-align: center; }
+        .qty-val {
+            min-width: 30px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 15px;
+        }
 
-        /* Formulario y Footer */
-        .form-box { margin: 20px 15px; }
+        /* Formulario de Datos */
+        .form-container { margin: 25px 15px; }
         .input-field {
-            width: 100%; padding: 15px; margin-bottom: 10px;
-            border: 1px solid #ddd; border-radius: 12px;
-            box-sizing: border-box; font-size: 16px;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 12px;
+            border: 1px solid #ddd;
+            border-radius: 14px;
+            font-size: 16px;
+            box-sizing: border-box;
+            font-family: inherit;
         }
 
+        /* Footer Fijo */
         .footer-fixed {
-            position: fixed; bottom: 0; width: 100%;
-            background: white; padding: 20px;
+            position: fixed;
+            bottom: 0; width: 100%;
+            background: var(--blanco);
+            padding: 20px;
             box-sizing: border-box;
-            box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
-            border-radius: 25px 25px 0 0;
-            z-index: 1000;
+            box-shadow: 0 -10px 25px rgba(0,0,0,0.08);
+            border-radius: 28px 28px 0 0;
+            z-index: 1001;
         }
 
         .total-row {
-            display: flex; justify-content: space-between;
-            align-items: center; margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-        .btn-order {
-            background: #25D366; color: white; border: none;
-            width: 100%; padding: 18px; border-radius: 15px;
-            font-size: 18px; font-weight: 700; cursor: pointer;
+        .total-label { font-size: 14px; color: #666; font-weight: 600; }
+        .total-amount { font-size: 26px; font-weight: 800; color: var(--verde-les3); }
+
+        .btn-send {
+            background: #25D366;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
         }
+
+        .btn-send:active { transform: scale(0.98); }
     </style>
 </head>
 <body>
 
 <header class="app-header">
-    <img src="logo_les3.png" class="header-logo" alt="Logo">
-    <div class="header-text-container">
+    <img src="471631362_580479834945456_153724577364083873_n.jpg" class="header-logo" alt="Logo Les 3">
+    <div class="header-text">
         <h1>LES 3</h1>
         <p>Pizzas & Empanadas</p>
     </div>
 </header>
 
-<main id="menu-app">
+<main id="app">
+    <!-- SECCIÓN PIZZAS -->
     <div class="category-container">
-        <div class="category-header" onclick="toggleCat(this)">
+        <div class="category-header" onclick="toggleCategory(this)">
             <h2>Pizzas</h2>
             <span class="toggle-icon">+</span>
         </div>
         <div class="category-content" id="list-pizzas"></div>
     </div>
 
+    <!-- SECCIÓN EMPANADAS -->
     <div class="category-container">
-        <div class="category-header" onclick="toggleCat(this)">
+        <div class="category-header" onclick="toggleCategory(this)">
             <h2>Empanadas</h2>
             <span class="toggle-icon">+</span>
         </div>
         <div class="category-content" id="list-empanadas"></div>
     </div>
 
+    <!-- SECCIÓN FAINA -->
     <div class="category-container">
-        <div class="category-header" onclick="toggleCat(this)">
+        <div class="category-header" onclick="toggleCategory(this)">
             <h2>Faina</h2>
             <span class="toggle-icon">+</span>
         </div>
         <div class="category-content" id="list-faina"></div>
     </div>
 
-    <div class="form-box">
-        <input type="text" id="cust-name" class="input-field" placeholder="Tu nombre">
-        <textarea id="cust-addr" class="input-field" placeholder="Dirección de entrega"></textarea>
+    <!-- FORMULARIO -->
+    <div class="form-container">
+        <input type="text" id="cust-name" class="input-field" placeholder="¿A nombre de quién?">
+        <textarea id="cust-address" class="input-field" rows="2" placeholder="Dirección exacta (ej: Calle 123, Timbre 2)"></textarea>
     </div>
 </main>
 
 <div class="footer-fixed">
     <div class="total-row">
-        <span style="font-weight: 600; color: #666;">Total a pagar</span>
-        <span style="font-size: 24px; font-weight: 800; color: var(--verde-les3);">$<span id="total-val">0</span></span>
+        <span class="total-label">Total estimado</span>
+        <span class="total-amount">$<span id="total-val">0</span></span>
     </div>
-    <button class="btn-order" onclick="sendWhatsApp()">Enviar pedido a WhatsApp</button>
+    <button class="btn-send" onclick="sendToWhatsApp()">
+        Confirmar Pedido vía WhatsApp
+    </button>
 </div>
 
 <script>
-    const menuData = {
+    const menu = {
         pizzas: [
             { id: 'p1', n: 'Muzza', p: 13000 },
             { id: 'p2', n: 'Muzza con Jamón', p: 16000 },
             { id: 'p3', n: 'Jamón y Huevo', p: 16000 },
+            { id: 'p4', n: 'Muzza con Huevo', p: 16000 },
             { id: 'p5', n: 'Jamón y Morrón', p: 18000 },
+            { id: 'p6', n: 'Muzza con Cebolla', p: 16000 },
             { id: 'p7', n: 'Napolitana', p: 16000 },
+            { id: 'p8', n: 'Muzza, Palmitos y S. Golf', p: 20000 },
+            { id: 'p9', n: 'Calabresa', p: 20000 },
+            { id: 'p10', n: 'Provolone', p: 20000 },
+            { id: 'p11', n: 'Roquefort', p: 20000 },
+            { id: 'p12', n: 'Jamón y Ananá', p: 22000 },
+            { id: 'p13', n: '4 Quesos', p: 20000 },
             { id: 'p14', n: 'Fugazzetta Rellena', p: 25000 }
         ],
         empanadas: [
-            { id: 'e_car', n: 'Carne', p: 2300, sp: false },
-            { id: 'e_pol', n: 'Pollo', p: 2300, sp: false },
-            { id: 'e_jyq', n: 'Jamón y Queso', p: 2300, sp: false },
-            { id: 'e_hum', n: 'Humita', p: 2300, sp: false },
-            { id: 'e_cap', n: 'Caprese', p: 2300, sp: false },
+            { id: 'e1', n: 'Carne', p: 2300, sp: false },
+            { id: 'e2', n: 'Pollo', p: 2300, sp: false },
+            { id: 'e3', n: 'Humita', p: 2300, sp: false },
+            { id: 'e4', n: 'Jamón y Queso', p: 2300, sp: false },
+            { id: 'e5', n: 'Verdura', p: 2300, sp: false },
+            { id: 'e6', n: 'Cebolla, Q y Panceta', p: 2300, sp: false },
+            { id: 'e7', n: 'Caprese', p: 2300, sp: false },
+            { id: 'e8', n: 'Roquefort', p: 2300, sp: false },
             { id: 'e_bon', n: 'Bondiola', p: 3000, sp: true },
             { id: 'e_14l', n: '1/4 Libra', p: 3000, sp: true }
         ],
@@ -285,112 +329,106 @@
 
     let cart = {};
 
-    function toggleCat(el) {
-        el.parentElement.classList.toggle('active');
+    function toggleCategory(header) {
+        header.parentElement.classList.toggle('active');
     }
 
-    function render() {
+    function init() {
         const lp = document.getElementById('list-pizzas');
         const le = document.getElementById('list-empanadas');
         const lf = document.getElementById('list-faina');
 
-        menuData.pizzas.forEach(p => lp.innerHTML += createCard(p, 'p'));
-        menuData.empanadas.forEach(e => le.innerHTML += createCard(e, 'e'));
-        menuData.faina.forEach(f => lf.innerHTML += createCard(f, 'f'));
+        menu.pizzas.forEach(p => lp.innerHTML += renderItem(p));
+        menu.empanadas.forEach(e => le.innerHTML += renderItem(e));
+        menu.faina.forEach(f => lf.innerHTML += renderItem(f));
     }
 
-    function createCard(item, type) {
-        let badge = item.sp ? `<span class="special-badge">⭐ ESPECIAL PREMIUM</span>` : '';
+    function renderItem(item) {
+        let star = item.sp ? `<div class="premium-tag">★ ESPECIAL PREMIUM</div>` : '';
         return `
             <div class="product-card">
-                <div class="name-wrapper">
+                <div class="product-info">
                     <span class="product-name">${item.n}</span>
-                    <span class="product-price">$${item.p.toLocaleString()}</span>
-                    ${badge}
+                    <span class="product-price">$${item.p.toLocaleString('es-AR')}</span>
+                    ${star}
                 </div>
                 <div class="stepper">
-                    <button class="step-btn" onclick="update('${item.id}', -1, '${type}')">-</button>
-                    <span class="qty-val" id="v-${item.id}">0</span>
-                    <button class="step-btn" onclick="update('${item.id}', 1, '${type}')">+</button>
+                    <button class="step-btn" onclick="updateQty('${item.id}', -1)">-</button>
+                    <span class="qty-val" id="qty-${item.id}">0</span>
+                    <button class="step-btn" onclick="updateQty('${item.id}', 1)">+</button>
                 </div>
             </div>`;
     }
 
-    function update(id, delta, type) {
+    function updateQty(id, delta) {
         cart[id] = Math.max(0, (cart[id] || 0) + delta);
-        document.getElementById(`v-${id}`).innerText = cart[id];
-        calc();
+        document.getElementById(`qty-${id}`).innerText = cart[id];
+        calculate();
     }
 
-    function calc() {
+    function calculate() {
         let total = 0;
-        let classicEmps = 0;
+        let standardEmps = 0;
 
-        for(let id in cart) {
-            if(cart[id] === 0) continue;
+        for (let id in cart) {
+            if (cart[id] === 0) continue;
+            let item = [...menu.pizzas, ...menu.empanadas, ...menu.faina].find(x => x.id === id);
             
-            // Buscar en todas las listas
-            let item = [...menuData.pizzas, ...menuData.empanadas, ...menuData.faina].find(x => x.id === id);
-            
-            if(item) {
-                if(item.p === 2300) { // Clásicas para promo docena
-                    classicEmps += cart[id];
+            if (item) {
+                // Si es empanada estándar ($2300), se suma para el cálculo de docena
+                if (item.p === 2300) {
+                    standardEmps += cart[id];
                 } else {
                     total += cart[id] * item.p;
                 }
             }
         }
-        // Aplicar promo docena a las de $2300
-        total += Math.floor(classicEmps / 12) * 25000 + (classicEmps % 12) * 2300;
+
+        // Lógica de docenas para empanadas estándar
+        total += Math.floor(standardEmps / 12) * 25000 + (standardEmps % 12) * 2300;
         
         document.getElementById('total-val').innerText = total.toLocaleString('es-AR');
+        return total;
     }
-function sendWhatsApp() {
-    const name = document.getElementById('cust-name').value;
-    const addr = document.getElementById('cust-addr').value;
-    
-    if(!name || !addr) return alert("Por favor, completa tus datos para el envío");
-    
-    // Encabezado con estilo
-    let msg = `*🍕 NUEVO PEDIDO - LES 3*\n`;
-    msg += `------------------------------\n\n`;
 
-    // Detalle de productos
-    let hayProductos = false;
-    for(let id in cart) {
-        if(cart[id] > 0) {
-            hayProductos = true;
-            let item = [...menuData.pizzas, ...menuData.empanadas, ...menuData.faina].find(x => x.id === id);
-            // Usamos un punto o guion estándar para evitar errores de símbolos
-            msg += `*${cart[id]}x* ${item.n}\n`;
+    function sendToWhatsApp() {
+        const name = document.getElementById('cust-name').value;
+        const addr = document.getElementById('cust-address').value;
+        const total = calculate();
+
+        if (!name || !addr) {
+            alert("Por favor, ingresa tu nombre y dirección.");
+            return;
         }
+
+        let itemsMsg = "";
+        for (let id in cart) {
+            if (cart[id] > 0) {
+                let item = [...menu.pizzas, ...menu.empanadas, ...menu.faina].find(x => x.id === id);
+                itemsMsg += `*${cart[id]}x* ${item.n}\n`;
+            }
+        }
+
+        if (!itemsMsg) {
+            alert("El carrito está vacío.");
+            return;
+        }
+
+        let msg = `*🍕 NUEVO PEDIDO - LES 3*\n`;
+        msg += `------------------------------\n\n`;
+        msg += itemsMsg;
+        msg += `\n------------------------------\n`;
+        msg += `💰 *TOTAL A PAGAR: $${total.toLocaleString('es-AR')}*\n`;
+        msg += `------------------------------\n\n`;
+        msg += `👤 *Cliente:* ${name}\n`;
+        msg += `📍 *Dirección:* ${addr}\n\n`;
+        msg += `_Enviado desde el Menú Digital_`;
+
+        const tel = "542257537475";
+        window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`);
     }
 
-    if(!hayProductos) return alert("El carrito está vacío");
-
-    // Total y datos del cliente
-    msg += `\n------------------------------\n`;
-    msg += `💰 *TOTAL A PAGAR: $${document.getElementById('total-val').innerText}*\n`;
-    msg += `------------------------------\n\n`;
-    msg += `👤 *Cliente:* ${name}\n`;
-    msg += `📍 *Dirección:* ${addr}\n\n`;
-    msg += `_Pedido enviado desde la App Web_`;
-
-    // Enlace a WhatsApp (Formato internacional recomendado)
-    const tel = "542257537475";
-    window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`);
-}
-    render();
+    init();
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
