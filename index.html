@@ -30,20 +30,21 @@ body {
 
 /* Añadimos una capa de color crema semi-transparente sobre la imagen 
    para que los textos sigan siendo fáciles de leer */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; 
-    height: 100vh;
-    background-color: rgba(248, 245, 240, 0.75);
-    z-index: -1;
-}
+
 
 html, body {
     /* Evita el efecto de rebote/overscroll en la mayoría de los navegadores */
     overscroll-behavior-y: none; 
-    background-color: var(--verde-les3); /* Cambiamos el fondo base al verde del header */
+    background-color: var(--verde-les3);
+    font-family: -apple-system, system-ui, sans-serif;
+    /* Usamos la imagen como fondo fijo */
+    background-image: url('background.jpg'); 
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    margin: 0; 
+    padding: 0;
+    padding-bottom: 140px;/* Cambiamos el fondo base al verde del header */
 }
 
 /* Aseguramos que el contenedor principal sea transparente o blanco limpio */
@@ -392,6 +393,7 @@ function sendWhatsApp() {
 </script>
 </body>
 </html>
+
 
 
 
