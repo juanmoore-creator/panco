@@ -1,297 +1,385 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pedido de Lasañas PANCO</title>
-  <style>
-    body {
-      font-family: 'Georgia', serif;
-      background: #fdf6ec;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px 20px;
-      min-height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Les 3 - Menú Interactivo</title>
+    <style>
+        :root {
+            --verde-les3: #144534;
+            --rosa-les3: #D6A0A0;
+            --oro: #D4AF37;
+            --crema-bg: #F8F5F0;
+            --blanco: #FFFFFF;
+            --text-main: #1A1A1A;
+        }
 
-    .formulario-container {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 18px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 550px;
-      border: 4px solid #c0392b33;
-    }
+body {
+    font-family: -apple-system, system-ui, sans-serif;
+    /* Usamos la imagen como fondo fijo */
+    background-image: url('background.jpg'); 
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    margin: 0; 
+    padding: 0;
+    padding-bottom: 140px;
+}
 
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+/* Añadimos una capa de color crema semi-transparente sobre la imagen 
+   para que los textos sigan siendo fáciles de leer */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(248, 245, 240, 0.70); /* El crema de Les 3 con 85% opacidad */
+    z-index: -1;
+}
 
-    .header img {
-      width: 100px;
-      height: auto;
-      margin-bottom: 10px;
-    }
+/* Aseguramos que el contenedor principal sea transparente o blanco limpio */
+.category-container {
+    margin: 15px;
+    background: rgba(255, 255, 255, 0.9); /* Blanco levemente transparente */
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
 
-    .header h1 {
-      color: #c0392b;
-      font-size: 1.8rem;
-      margin: 0;
-    }
+.app-header {
+    background: var(--verde-les3);
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    /* Quitamos el redondeado inferior para que se pegue arriba */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
 
-    .precio-info {
-      text-align: center;
-      color: #555;
-      font-style: italic;
-      margin-bottom: 20px;
-    }
+.header-logo {
+    width: 50px; /* Tamaño optimizado para mobile */
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--rosa-les3);
+    background: white;
+    flex-shrink: 0; /* Evita que el logo se achique */
+}
 
-    .lasaña-item {
-      margin-bottom: 20px;
-      padding: 15px;
-      background: #fff8f2;
-      border-radius: 12px;
-      border-left: 5px solid #27ae60;
-    }
+.header-text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
-    .lasaña-item h3 {
-      margin: 0;
-      color: #b03a2e;
-      font-size: 1.2rem;
-    }
+.header-text-container h1 {
+    margin: 0;
+    font-size: 18px; /* Título más pequeño y balanceado */
+    letter-spacing: 1px;
+    font-weight: 800;
+}
 
-    .lasaña-item p {
-      margin: 6px 0 12px;
-      color: #555;
-    }
+.header-text-container p {
+    margin: 0;
+    font-size: 11px;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+        /* Acordeones UX */
+        .category-container {
+            margin: 15px;
+            background: var(--blanco);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
 
-    .contador {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+        .category-header {
+            padding: 18px 20px;
+            background: var(--blanco);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
 
-    .contador button {
-      width: 32px;
-      height: 32px;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      background-color: #e74c3c;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-    }
+        .category-header h2 {
+            margin: 0; font-size: 18px; color: var(--verde-les3);
+            display: flex; align-items: center; gap: 10px;
+        }
 
-    .contador button:hover {
-      background-color: #c0392b;
-    }
+        .toggle-icon {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--rosa-les3);
+            transition: transform 0.3s;
+        }
 
-    .contador input {
-      width: 40px;
-      text-align: center;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      padding: 5px;
-    }
+        .category-content {
+            display: none; /* Retraído por defecto */
+            padding: 10px;
+        }
 
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 20px;
-      color: #2c3e50;
-    }
+        .category-container.active .category-content {
+            display: block;
+        }
 
-    input[type="text"],
-    select,
-    textarea,
-    button.enviar {
-      width: 100%;
-      padding: 10px;
-      margin-top: 8px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
+        .category-container.active .toggle-icon {
+            transform: rotate(45deg); /* El + se convierte en x */
+        }
 
-    button.enviar {
-      background-color: #27ae60;
-      color: white;
-      border: none;
-      cursor: pointer;
-      margin-top: 25px;
-      font-size: 1.1rem;
-      transition: background 0.3s;
-    }
+        /* Productos */
+        .product-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 10px;
+            border-bottom: 1px solid #f9f9f9;
+        }
 
-    button.enviar:hover {
-      background-color: #1e8449;
-    }
+        .name-wrapper { display: flex; flex-direction: column; }
+        .product-name { font-weight: 600; font-size: 15px; }
+        .product-price { font-size: 13px; color: #777; }
 
-    .footer {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      text-align: center;
-      color: #888;
-    }
-  </style>
+        /* Badge Especial */
+        .special-badge {
+            font-size: 10px;
+            background: #fff8e1;
+            color: var(--oro);
+            border: 1px solid var(--oro);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            width: fit-content;
+            margin-top: 4px;
+        }
+
+        /* Stepper Controles */
+        .stepper {
+            display: flex;
+            align-items: center;
+            background: #F0F2F5;
+            border-radius: 10px;
+            padding: 2px;
+        }
+
+        .step-btn {
+            width: 32px; height: 32px;
+            border-radius: 8px; border: none;
+            background: var(--blanco);
+            color: var(--verde-les3);
+            font-weight: bold; font-size: 18px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .qty-val { padding: 0 12px; font-weight: 700; min-width: 15px; text-align: center; }
+
+        /* Formulario y Footer */
+        .form-box { margin: 20px 15px; }
+        .input-field {
+            width: 100%; padding: 15px; margin-bottom: 10px;
+            border: 1px solid #ddd; border-radius: 12px;
+            box-sizing: border-box; font-size: 16px;
+        }
+
+        .footer-fixed {
+            position: fixed; bottom: 0; width: 100%;
+            background: white; padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
+            border-radius: 25px 25px 0 0;
+            z-index: 1000;
+        }
+
+        .total-row {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 15px;
+        }
+
+        .btn-order {
+            background: #25D366; color: white; border: none;
+            width: 100%; padding: 18px; border-radius: 15px;
+            font-size: 18px; font-weight: 700; cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-  <div class="formulario-container">
-    <div class="header">
-      <img src="logo.png" alt="Logo PANCO" />
-      <h1>Pedido de Lasañas PANCO</h1>
+
+<header class="app-header">
+    <img src="logo_les3.png" class="header-logo" alt="Logo">
+    <h1 style="margin:0; font-size: 22px; letter-spacing: 1px;">LES 3</h1>
+    <p style="margin:5px 0 0; font-size: 13px; opacity: 0.9;">Pizzas & Empanadas</p>
+</header>
+
+<main id="menu-app">
+    <div class="category-container">
+        <div class="category-header" onclick="toggleCat(this)">
+            <h2>Pizzas</h2>
+            <span class="toggle-icon">+</span>
+        </div>
+        <div class="category-content" id="list-pizzas"></div>
     </div>
 
-    <div class="precio-info">
-      ¡Listas para el horno y con delivery barrial!
-       Cada una por <strong>$9000</strong><br>
-       Envío gratis a partir de 4 lasañas, sino, <strong>$1500</strong><br>
+    <div class="category-container">
+        <div class="category-header" onclick="toggleCat(this)">
+            <h2>Empanadas</h2>
+            <span class="toggle-icon">+</span>
+        </div>
+        <div class="category-content" id="list-empanadas"></div>
     </div>
 
-    <form id="formulario">
-
-      <div class="lasaña-item">
-        <h3>La Clásica</h3>
-        <p>Bolognesa de carne con espinacas a la crema.</p>
-        <div class="contador">
-          <button type="button" onclick="modificar('clasica', -1)">–</button>
-          <input type="number" id="clasica" value="0" min="0" readonly />
-          <button type="button" onclick="modificar('clasica', 1)">+</button>
+    <div class="category-container">
+        <div class="category-header" onclick="toggleCat(this)">
+            <h2>Faina</h2>
+            <span class="toggle-icon">+</span>
         </div>
-      </div>
+        <div class="category-content" id="list-faina"></div>
+    </div>
 
-      <div class="lasaña-item">
-        <h3>La Argenta</h3>
-        <p>Lomito de cerdo ahumado, queso dambo, cebolla caramelizada y morrón ahumado.</p>
-        <div class="contador">
-          <button type="button" onclick="modificar('argenta', -1)">–</button>
-          <input type="number" id="argenta" value="0" min="0" readonly />
-          <button type="button" onclick="modificar('argenta', 1)">+</button>
-        </div>
-      </div>
+    <div class="form-box">
+        <input type="text" id="cust-name" class="input-field" placeholder="Tu nombre">
+        <textarea id="cust-addr" class="input-field" placeholder="Dirección de entrega"></textarea>
+    </div>
+</main>
 
-      <div class="lasaña-item">
-        <h3>La Veggie</h3>
-        <p>Bolognesa de soja texturizada y crema de espinacas.</p>
-        <div class="contador">
-          <button type="button" onclick="modificar('veggie', -1)">–</button>
-          <input type="number" id="veggie" value="0" min="0" readonly />
-          <button type="button" onclick="modificar('veggie', 1)">+</button>
-        </div>
-      </div>
-
-      <label for="nombre">Tu nombre</label>
-      <input type="text" id="nombre" required placeholder="Ej: Juan Pérez" />
-
-      <label for="direccion">Dirección de entrega</label>
-      <textarea id="direccion" rows="3" required placeholder="Ej: Calle 123, Ciudad, Piso 2, Dpto B"></textarea>
-
-      
-
-      <label for="dia">¿Qué día querés que lo entreguemos?</label>
-      <select id="dia" required>
-        <option value="" disabled selected>Elegí un día</option>
-        <option value="Lunes">Lunes</option>
-        <option value="Martes">Martes</option>
-        <option value="Miércoles">Miércoles</option>
-        <option value="Jueves">Jueves</option>
-        <option value="Viernes">Viernes</option>
-        <option value="Sábado">Sábado</option>
-        <option value="Domingo">Domingo</option>
-      </select>
-      <div id="total-preview" class="precio-info" style="margin-top: 20px;">
-  Total: $0
+<div class="footer-fixed">
+    <div class="total-row">
+        <span style="font-weight: 600; color: #666;">Total a pagar</span>
+        <span style="font-size: 24px; font-weight: 800; color: var(--verde-les3);">$<span id="total-val">0</span></span>
+    </div>
+    <button class="btn-order" onclick="sendWhatsApp()">Enviar pedido a WhatsApp</button>
 </div>
 
-      <button class="enviar" type="submit">Enviar pedido por WhatsApp</button>
-    </form>
+<script>
+    const menuData = {
+        pizzas: [
+            { id: 'p1', n: 'Muzza', p: 13000 },
+            { id: 'p2', n: 'Muzza con Jamón', p: 16000 },
+            { id: 'p3', n: 'Jamón y Huevo', p: 16000 },
+            { id: 'p5', n: 'Jamón y Morrón', p: 18000 },
+            { id: 'p7', n: 'Napolitana', p: 16000 },
+            { id: 'p14', n: 'Fugazzetta Rellena', p: 25000 }
+        ],
+        empanadas: [
+            { id: 'e_car', n: 'Carne', p: 2300, sp: false },
+            { id: 'e_pol', n: 'Pollo', p: 2300, sp: false },
+            { id: 'e_jyq', n: 'Jamón y Queso', p: 2300, sp: false },
+            { id: 'e_hum', n: 'Humita', p: 2300, sp: false },
+            { id: 'e_cap', n: 'Caprese', p: 2300, sp: false },
+            { id: 'e_bon', n: 'Bondiola', p: 3000, sp: true },
+            { id: 'e_14l', n: '1/4 Libra', p: 3000, sp: true }
+        ],
+        faina: [
+            { id: 'f1', n: 'Porción de Faina', p: 1000 }
+        ]
+    };
 
-    <div class="footer">
-      ¡Gracias por elegir PANCO! 🇮🇹
-    </div>
-  </div>
+    let cart = {};
 
- <script>
-  const precioUnitario = 9000;
-  const costoEnvio = 1500;
-
-  function modificar(id, valor) {
-    const input = document.getElementById(id);
-    let nuevo = parseInt(input.value) + valor;
-    if (nuevo < 0) nuevo = 0;
-    input.value = nuevo;
-    actualizarTotal();
-  }
-
-  function actualizarTotal() {
-    const clasica = parseInt(document.getElementById("clasica").value) || 0;
-    const argenta = parseInt(document.getElementById("argenta").value) || 0;
-    const veggie = parseInt(document.getElementById("veggie").value) || 0;
-
-    const totalLasañas = clasica + argenta + veggie;
-    let total = totalLasañas * precioUnitario;
-
-    if (totalLasañas < 4 && totalLasañas > 0) {
-      total += costoEnvio;
+    function toggleCat(el) {
+        el.parentElement.classList.toggle('active');
     }
 
-    document.getElementById("total-preview").innerText = `Total: $${total}`;
-  }
+    function render() {
+        const lp = document.getElementById('list-pizzas');
+        const le = document.getElementById('list-empanadas');
+        const lf = document.getElementById('list-faina');
 
-  document.getElementById("formulario").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const nombre = document.getElementById("nombre").value.trim();
-    const clasica = parseInt(document.getElementById("clasica").value) || 0;
-    const argenta = parseInt(document.getElementById("argenta").value) || 0;
-    const veggie = parseInt(document.getElementById("veggie").value) || 0;
-    const direccion = document.getElementById("direccion").value.trim();
-    const dia = document.getElementById("dia").value;
-
-    let mensaje = `Hola, soy ${nombre}. Quiero pedir:\n`;
-    let totalLasañas = 0;
-
-    if (clasica > 0) {
-      mensaje += `- ${clasica} porción(es) de La Clásica ($9000 c/u)\n`;
-      totalLasañas += clasica;
-    }
-    if (argenta > 0) {
-      mensaje += `- ${argenta} porción(es) de La Argenta ($9000 c/u)\n`;
-      totalLasañas += argenta;
-    }
-    if (veggie > 0) {
-      mensaje += `- ${veggie} porción(es) de La Veggie ($9000 c/u)\n`;
-      totalLasañas += veggie;
+        menuData.pizzas.forEach(p => lp.innerHTML += createCard(p, 'p'));
+        menuData.empanadas.forEach(e => le.innerHTML += createCard(e, 'e'));
+        menuData.faina.forEach(f => lf.innerHTML += createCard(f, 'f'));
     }
 
-    if (totalLasañas === 0) {
-      alert("Por favor seleccioná al menos una lasaña.");
-      return;
+    function createCard(item, type) {
+        let badge = item.sp ? `<span class="special-badge">⭐ ESPECIAL PREMIUM</span>` : '';
+        return `
+            <div class="product-card">
+                <div class="name-wrapper">
+                    <span class="product-name">${item.n}</span>
+                    <span class="product-price">$${item.p.toLocaleString()}</span>
+                    ${badge}
+                </div>
+                <div class="stepper">
+                    <button class="step-btn" onclick="update('${item.id}', -1, '${type}')">-</button>
+                    <span class="qty-val" id="v-${item.id}">0</span>
+                    <button class="step-btn" onclick="update('${item.id}', 1, '${type}')">+</button>
+                </div>
+            </div>`;
     }
 
-    mensaje += `Dirección de entrega: ${direccion}\n`;
-    mensaje += `Día preferido de entrega: ${dia}\n`;
-
-    if (totalLasañas < 4) {
-      mensaje += `Costo de envío: $1500\n`;
-    } else {
-      mensaje += `¡Con envío gratis por comprar 4 o más lasañas!\n`;
+    function update(id, delta, type) {
+        cart[id] = Math.max(0, (cart[id] || 0) + delta);
+        document.getElementById(`v-${id}`).innerText = cart[id];
+        calc();
     }
 
-    const numero = "+542216011198";
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+    function calc() {
+        let total = 0;
+        let classicEmps = 0;
 
-    window.open(url, "_blank");
-  });
+        for(let id in cart) {
+            if(cart[id] === 0) continue;
+            
+            // Buscar en todas las listas
+            let item = [...menuData.pizzas, ...menuData.empanadas, ...menuData.faina].find(x => x.id === id);
+            
+            if(item) {
+                if(item.p === 2300) { // Clásicas para promo docena
+                    classicEmps += cart[id];
+                } else {
+                    total += cart[id] * item.p;
+                }
+            }
+        }
+        // Aplicar promo docena a las de $2300
+        total += Math.floor(classicEmps / 12) * 25000 + (classicEmps % 12) * 2300;
+        
+        document.getElementById('total-val').innerText = total.toLocaleString('es-AR');
+    }
+function sendWhatsApp() {
+    const name = document.getElementById('cust-name').value;
+    const addr = document.getElementById('cust-addr').value;
+    
+    if(!name || !addr) return alert("Por favor, completa tus datos para el envío");
+    
+    // Encabezado con estilo
+    let msg = `*🍕 NUEVO PEDIDO - LES 3*\n`;
+    msg += `------------------------------\n\n`;
 
-  // Mostrar el total al cargar por primera vez
-  actualizarTotal();
+    // Detalle de productos
+    let hayProductos = false;
+    for(let id in cart) {
+        if(cart[id] > 0) {
+            hayProductos = true;
+            let item = [...menuData.pizzas, ...menuData.empanadas, ...menuData.faina].find(x => x.id === id);
+            // Usamos un punto o guion estándar para evitar errores de símbolos
+            msg += `*${cart[id]}x* ${item.n}\n`;
+        }
+    }
+
+    if(!hayProductos) return alert("El carrito está vacío");
+
+    // Total y datos del cliente
+    msg += `\n------------------------------\n`;
+    msg += `💰 *TOTAL A PAGAR: $${document.getElementById('total-val').innerText}*\n`;
+    msg += `------------------------------\n\n`;
+    msg += `👤 *Cliente:* ${name}\n`;
+    msg += `📍 *Dirección:* ${addr}\n\n`;
+    msg += `_Pedido enviado desde la App Web_`;
+
+    // Enlace a WhatsApp (Formato internacional recomendado)
+    const tel = "542257537475";
+    window.open(`https://wa.me/${tel}?text=${encodeURIComponent(msg)}`);
+}
+    render();
 </script>
 </body>
 </html>
-
