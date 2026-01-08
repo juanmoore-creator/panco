@@ -16,37 +16,33 @@
             --text-main: #1A1A1A;
         }
 
+/* 1. Fondo base y corrección de rebote */
+html, body {
+    overscroll-behavior-y: none;
+    background-color: var(--verde-les3); /* Color de seguridad para el rebote */
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: -apple-system, system-ui, sans-serif;
-    /* Usamos la imagen como fondo fijo */
     background-image: url('background.jpg'); 
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
-    margin: 0; 
-    padding: 0;
+    min-height: 100vh;
     padding-bottom: 140px;
 }
 
-/* Añadimos una capa de color crema semi-transparente sobre la imagen 
-   para que los textos sigan siendo fáciles de leer */
-
-
-html, body {
-    /* Evita el efecto de rebote/overscroll en la mayoría de los navegadores */
-    overscroll-behavior-y: none; 
-    background-color: var(--verde-les3);
-    font-family: -apple-system, system-ui, sans-serif;
-    /* Usamos la imagen como fondo fijo */
-    background-image: url('background.jpg'); 
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    margin: 0; 
-    padding: 0;
-    padding-bottom: 140px;/* Cambiamos el fondo base al verde del header */
+/* 2. LA CAPA QUE ACLARA EL FONDO (Esto es lo que faltaba) */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(248, 245, 240, 0.85); /* 0.85 controla la claridad */
+    z-index: -1;
 }
-
 /* Aseguramos que el contenedor principal sea transparente o blanco limpio */
 .category-container {
     margin: 15px;
@@ -393,6 +389,7 @@ function sendWhatsApp() {
 </script>
 </body>
 </html>
+
 
 
 
