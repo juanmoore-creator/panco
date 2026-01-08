@@ -37,6 +37,12 @@ body::before {
     z-index: -1;
 }
 
+html, body {
+    /* Evita el efecto de rebote/overscroll en la mayoría de los navegadores */
+    overscroll-behavior-y: none; 
+    background-color: var(--verde-les3); /* Cambiamos el fondo base al verde del header */
+}
+
 /* Aseguramos que el contenedor principal sea transparente o blanco limpio */
 .category-container {
     margin: 15px;
@@ -383,3 +389,4 @@ function sendWhatsApp() {
 </script>
 </body>
 </html>
+
