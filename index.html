@@ -7,92 +7,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Les 3 - Menú Interactivo</title>
     <style>
-        :root {
-            --verde-les3: #144534;
-            --rosa-les3: #D6A0A0;
-            --oro: #D4AF37;
-            --crema-bg: #F8F5F0;
-            --blanco: #FFFFFF;
-            --text-main: #1A1A1A;
-        }
+    :root {
+        --verde-les3: #144534;
+        --rosa-les3: #D6A0A0;
+        --oro: #D4AF37;
+        --crema-bg: #F8F5F0;
+        --blanco: #FFFFFF;
+        --text-main: #1A1A1A;
+    }
 
-/* 1. Fondo base y corrección de rebote */
-html, body {
-    overscroll-behavior-y: none;
-    background-color: var(--verde-les3); /* Color de seguridad para el rebote */
-    margin: 0;
-    padding: 0;
-}
+    /* Corrección de fondo y rebote */
+    html {
+        background-color: var(--verde-les3); /* Color para el rebote superior */
+        overscroll-behavior-y: none;
+    }
 
-body {
-    font-family: -apple-system, system-ui, sans-serif;
-    background-image: url('background.jpg'); 
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    min-height: 100vh;
-    padding-bottom: 140px;
-}
+    body {
+        margin: 0;
+        padding: 0;
+        padding-bottom: 140px;
+        font-family: -apple-system, system-ui, sans-serif;
+        background-image: url('background.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        min-height: 100vh;
+        position: relative;
+    }
 
-/* 2. LA CAPA QUE ACLARA EL FONDO (Esto es lo que faltaba) */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background-color: rgba(248, 245, 240, 0.90); /* 0.85 controla la claridad */
-    z-index: -1;
-}
+    /* CAPA DE ACLARADO CRÍTICA */
+    /* Usamos un z-index alto para asegurar que tape la imagen oscura */
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(248, 245, 240, 0.92); /* Casi blanco para que sea muy claro */
+        z-index: -1;
+        pointer-events: none;
+    }
 
-/* 3. Header Compacto Estilizado */
-.app-header {
-    background: var(--verde-les3);
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
+    /* Header Compacto */
+    .app-header {
+        background: var(--verde-les3);
+        color: white;
+        padding: 10px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
 
-.header-logo {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    border: 2px solid var(--rosa-les3);
-    background: white;
-    object-fit: cover;
-}
+    .header-logo {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: 2px solid var(--rosa-les3);
+        background: white;
+        object-fit: cover;
+    }
 
-.header-text-container {
-    display: flex;
-    flex-direction: column;
-}
+    .header-text-container h1 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
 
-.header-text-container h1 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: 1px;
-}
+    .header-text-container p {
+        margin: 0;
+        font-size: 11px;
+        opacity: 0.85;
+        text-transform: uppercase;
+    }
 
-.header-text-container p {
-    margin: 0;
-    font-size: 11px;
-    opacity: 0.85;
-    text-transform: uppercase;
-}
-        /* Acordeones UX */
-        .category-container {
-            margin: 15px;
-            background: var(--blanco);
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-        }
+    /* Contenedores de productos */
+    .category-container {
+        margin: 15px;
+        background: var(--blanco);
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        position: relative; /* Asegura que esté sobre el before */
+        z-index: 1;
+    }
 
         .category-header {
             padding: 18px 20px;
@@ -381,6 +384,7 @@ function sendWhatsApp() {
 </script>
 </body>
 </html>
+
 
 
 
