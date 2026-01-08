@@ -28,23 +28,15 @@
             margin: 0;
             padding: 0;
             padding-bottom: 160px; /* Espacio para el footer flotante */
-            background-image: url('background.jpg');
+            
+            /* TÉCNICA DEFINITIVA: Capa de aclarado integrada directamente en el fondo */
+            background-image: linear-gradient(rgba(248, 245, 240, 0.92), rgba(248, 245, 240, 0.92)), url('background.jpg');
+            
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
             min-height: 100vh;
             color: var(--text-main);
-        }
-
-        /* Capa de aclarado (Watermark effect) */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(248, 245, 240, 0.92); /* 0.92 para máxima claridad */
-            z-index: -1;
-            pointer-events: none;
         }
 
         /* Header Compacto y Profesional */
